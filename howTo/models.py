@@ -7,10 +7,7 @@ User = get_user_model()
 class Categorie(models.Model):
     title = models.CharField(max_length=255,unique=True)
     description = models.TextField()
-    related_to =  models.ForeignKey('Categorie',
-                                    on_delete=models.CASCADE,
-                                    related_name="childs",
-                                    null=True)
+
 
 
 class Post(models.Model):

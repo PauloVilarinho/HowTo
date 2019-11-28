@@ -4,6 +4,9 @@ from .views import *
 
 urlpatterns = [
 
+    path('login', MyTokenObtainPairView.as_view(), name=MyTokenObtainPairView.name),
+    path('signup', UserCreate.as_view(), name=UserCreate.name),
+
     path('user', UserList.as_view(), name=UserList.name),
     path('user/<int:pk>', UserDetail.as_view(), name=UserDetail.name),
 
@@ -18,4 +21,7 @@ urlpatterns = [
 
     path('step', StepList.as_view(), name=StepList.name),
     path('step/<int:pk>', StepDetail.as_view(), name=StepDetail.name),
+
+    path('comment', CommentList.as_view(), name=CommentList.name),
+    path('comment/<int:pk>', CommentDetail.as_view(), name=CommentDetail.name),
 ]
