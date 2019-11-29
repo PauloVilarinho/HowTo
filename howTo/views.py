@@ -68,6 +68,10 @@ class PostList(ListCreateAPIView):
     serializer_class = PostSerializer
     name = "post-list"
 
+    filter_fields = ('title',)
+    search_fields = ('^description',)
+    ordering_fields = ('pk', 'title')
+
     def post(self, request, *args, **kwargs):
         owner = reverse('user-detail',args=[request.user.id],request=request)
         request.data['owner'] = str(owner)
@@ -183,3 +187,19 @@ class CommentDetail(RetrieveUpdateDestroyAPIView):
         post = reverse('post-detail',args=[Comment.objects.get(pk=kwargs['pk']).post.id],request=request)
         request.data['post'] = str(post)
         return super().patch(request, *args, **kwargs)
+
+
+class ApiRoot(GenericAPIView):
+    name = 'api-root'
+
+    def get(self, request, *args, **kwargs):
+        return Response({
+            "signup": reverse(UserCreate.name, request=request),
+            "login": reverse(MyTokenObtainPairView.name, request=request),
+            "user": reverse(UserList.name, request=request),
+            "categorie": reverse(CategorieList.name, request=request),
+            "post": reverse(PostList.name, request=request),
+            "part": reverse(PartList.name, request=request),
+            "step": reverse(StepList.name, request=request),
+            "comment": reverse(CommentList.name, request=request),
+        }, status=status.HTTP_200_OK)
