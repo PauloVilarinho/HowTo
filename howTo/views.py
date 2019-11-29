@@ -10,6 +10,8 @@ from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
 from .permissions import *
 from .models import *
 from .serializers import *
+from rest_framework import filters
+from django_filters import NumberFilter, DateTimeFilter, AllValuesFilter
 
 
 
@@ -35,6 +37,7 @@ class UserList(ListAPIView):
     serializer_class = UserSerializer
     name = "user-list"
 
+
 class UserDetail(RetrieveDestroyAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly,IsAdminOrUserOrReadOnly]
     queryset = User.objects.all()
@@ -47,6 +50,10 @@ class CategorieList(ListCreateAPIView):
     queryset = Categorie.objects.all()
     serializer_class = CategorieSerializer
     name = "categorie-list"
+
+    filter_fields = ('title',)
+    search_fields = ('^description',)
+    ordering_fields = ('pk', 'title')
 
 class CategorieDetail(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly,IsAdminOrReadOnly]
