@@ -3,6 +3,7 @@ from .views import *
 
 
 urlpatterns = [
+    path('', ApiRoot.as_view(), name=ApiRoot.name),
 
     path('login', MyTokenObtainPairView.as_view(), name=MyTokenObtainPairView.name),
     path('signup', UserCreate.as_view(), name=UserCreate.name),
