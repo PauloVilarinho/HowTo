@@ -10,6 +10,8 @@ from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
 from .permissions import *
 from .models import *
 from .serializers import *
+from rest_framework import filters
+from django_filters import NumberFilter, DateTimeFilter, AllValuesFilter
 
 
 
@@ -35,6 +37,7 @@ class UserList(ListAPIView):
     serializer_class = UserSerializer
     name = "user-list"
 
+
 class UserDetail(RetrieveDestroyAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly,IsAdminOrUserOrReadOnly]
     queryset = User.objects.all()
@@ -48,6 +51,10 @@ class CategorieList(ListCreateAPIView):
     serializer_class = CategorieSerializer
     name = "categorie-list"
 
+    filter_fields = ('title',)
+    search_fields = ('^description',)
+    ordering_fields = ('pk', 'title')
+
 class CategorieDetail(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly,IsAdminOrReadOnly]
     queryset = Categorie.objects.all()
@@ -60,6 +67,10 @@ class PostList(ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     name = "post-list"
+
+    filter_fields = ('title',)
+    search_fields = ('^description',)
+    ordering_fields = ('pk', 'title')
 
     def post(self, request, *args, **kwargs):
         owner = reverse('user-detail',args=[request.user.id],request=request)
@@ -176,3 +187,19 @@ class CommentDetail(RetrieveUpdateDestroyAPIView):
         post = reverse('post-detail',args=[Comment.objects.get(pk=kwargs['pk']).post.id],request=request)
         request.data['post'] = str(post)
         return super().patch(request, *args, **kwargs)
+
+
+class ApiRoot(GenericAPIView):
+    name = 'api-root'
+
+    def get(self, request, *args, **kwargs):
+        return Response({
+            "signup": reverse(UserCreate.name, request=request),
+            "login": reverse(MyTokenObtainPairView.name, request=request),
+            "user": reverse(UserList.name, request=request),
+            "categorie": reverse(CategorieList.name, request=request),
+            "post": reverse(PostList.name, request=request),
+            "part": reverse(PartList.name, request=request),
+            "step": reverse(StepList.name, request=request),
+            "comment": reverse(CommentList.name, request=request),
+        }, status=status.HTTP_200_OK)
