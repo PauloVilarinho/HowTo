@@ -68,7 +68,7 @@ class PostList(ListCreateAPIView):
     serializer_class = PostSerializer
     name = "post-list"
 
-    filter_fields = ('title',)
+    filter_fields = ('title', 'categorie', 'owner')
     search_fields = ('^description',)
     ordering_fields = ('pk', 'title')
 
@@ -98,6 +98,10 @@ class PartList(ListCreateAPIView):
     queryset = Part.objects.all()
     serializer_class = PartSerializer
     name = "part-list"
+
+    filter_fields = ('title', 'post')
+    search_fields = ('^title',)
+    ordering_fields = ('pk', 'title')
 
     def post(self, request, *args, **kwargs):
         post_id = int(request.data['post'].split('/')[-1])
@@ -131,6 +135,10 @@ class StepList(ListCreateAPIView):
     serializer_class = StepSerializer
     name = "step-list"
 
+    filter_fields = ('title', 'part')
+    search_fields = ('^title',)
+    ordering_fields = ('pk', 'title')
+
     def post(self, request, *args, **kwargs):
         part_id = int(request.data['part'].split('/')[-1])
         try :
@@ -162,6 +170,10 @@ class CommentList(ListCreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     name = "comment-list"
+
+    filter_fields = ('title', 'post', 'owner')
+    search_fields = ('^title',)
+    ordering_fields = ('pk', 'title')
 
     def post(self, request, *args, **kwargs):
         owner = reverse('user-detail',args=[request.user.id],request=request)

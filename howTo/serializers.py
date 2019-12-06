@@ -28,7 +28,7 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url','id','title','description','owner','categorie','parts']
 
 class PartSerializer(serializers.HyperlinkedModelSerializer):
-    steps = serializers.HyperlinkedIdentityField(many=True, read_only=True, view_name="steps-detail")
+    steps = serializers.HyperlinkedIdentityField(many=True, read_only=True, view_name="step-detail")
     class Meta:
         model = Part
         fields = ['url','id','title','steps','post']
