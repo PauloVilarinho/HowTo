@@ -171,7 +171,7 @@ class CommentList(ListCreateAPIView):
     serializer_class = CommentSerializer
     name = "comment-list"
 
-    filter_fields = ('title', 'post', 'owner')
+    filter_fields = ('text', 'post', 'owner')
     search_fields = ('^title',)
     ordering_fields = ('pk', 'title')
 

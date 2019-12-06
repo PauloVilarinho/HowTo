@@ -1,8 +1,12 @@
 from django.urls import path, include
 from .views import *
+from rest_framework_swagger.views import get_swagger_view
 
+schema_view = get_swagger_view(title='Pastebin API')
 
 urlpatterns = [
+    path('documentation', schema_view),
+
     path('', ApiRoot.as_view(), name=ApiRoot.name),
 
     path('login', MyTokenObtainPairView.as_view(), name=MyTokenObtainPairView.name),
@@ -25,4 +29,6 @@ urlpatterns = [
 
     path('comment', CommentList.as_view(), name=CommentList.name),
     path('comment/<int:pk>', CommentDetail.as_view(), name=CommentDetail.name),
+
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

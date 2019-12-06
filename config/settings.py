@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # Crispy forms
     'crispy_forms',
     'django_filters',
+    'rest_framework_swagger',
 ]
 
 MIDDLEWARE = [
@@ -128,8 +129,14 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES': {
         'anon': '15/hour',
         'user': '45/hour'
-    }
+    },
+
+    'DEFAULT_SCHEMA_CLASS': 
+        'rest_framework.schemas.coreapi.AutoSchema',
 }
+
+LOGIN_URL = 'rest_framework:login'
+LOGOUT_URL = 'rest_framework:logout'
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=300),
