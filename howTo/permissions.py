@@ -12,9 +12,6 @@ class IsAdminOrReadOnly(BasePermission):
 
 
 class IsAdminOrUserOrReadOnly(BasePermission):
-    def has_permission(self, request, view):
-        return True
-
     def has_object_permission(self, request, view, obj):
         if request.method in SAFE_METHODS:
             return True
@@ -22,9 +19,6 @@ class IsAdminOrUserOrReadOnly(BasePermission):
             return request.user.is_staff or obj == request.user
 
 class IsAdminOrOwnerOrReadOnly(BasePermission):
-    def has_permission(self, request, view):
-        return True
-
     def has_object_permission(self, request, view, obj):
         if request.method in SAFE_METHODS:
             return True
@@ -32,9 +26,6 @@ class IsAdminOrOwnerOrReadOnly(BasePermission):
             return request.user.is_staff or obj.owner == request.user
 
 class IsAdminOrPostOwnerOrReadOnly(BasePermission):
-    def has_permission(self, request, view):
-        return True
-
     def has_object_permission(self, request, view, obj):
         if request.method in SAFE_METHODS:
             return True
@@ -42,9 +33,6 @@ class IsAdminOrPostOwnerOrReadOnly(BasePermission):
             return request.user.is_staff or obj.post.owner == request.user
 
 class IsAdminOrPartOwnerOrReadOnly(BasePermission):
-    def has_permission(self, request, view):
-        return True
-
     def has_object_permission(self, request, view, obj):
         if request.method in SAFE_METHODS:
             return True
