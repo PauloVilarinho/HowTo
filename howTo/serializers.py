@@ -14,31 +14,32 @@ class CreateUserSerializer(serializers.HyperlinkedModelSerializer):
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)
 
-class CategorieSerializer(serializers.HyperlinkedModelSerializer):
-    posts = serializers.HyperlinkedIdentityField(many=True, read_only=True, view_name="post-detail")
-
+class CommentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Categorie
-        fields = ['url','id','title','description','posts']
-
-class PostSerializer(serializers.HyperlinkedModelSerializer):
-    parts = serializers.HyperlinkedIdentityField(many=True, read_only=True, view_name="part-detail")
-    class Meta:
-        model = Post
-        fields = ['url','id','title','description','owner','categorie','parts']
-
-class PartSerializer(serializers.HyperlinkedModelSerializer):
-    steps = serializers.HyperlinkedIdentityField(many=True, read_only=True, view_name="step-detail")
-    class Meta:
-        model = Part
-        fields = ['url','id','title','steps','post']
+        model = Comment
+        fields = ['url','id','post','owner','text']
 
 class StepSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Step
         fields = ['url','id','title','description','part']
 
-class CommentSerializer(serializers.HyperlinkedModelSerializer):
+class PartSerializer(serializers.HyperlinkedModelSerializer):
+    steps = StepSerializer(many=True, read_only=True)
     class Meta:
-        model = Comment
-        fields = ['url','id','post','owner','text']
+        model = Part
+        fields = ['url','id','title','steps','post']
+
+class PostSerializer(serializers.HyperlinkedModelSerializer):
+    parts = PartSerializer(many=True, read_only=True)
+    comments = CommentSerializer(many=True, read_only=True)
+    class Meta:
+        model = Post
+        fields = ['url','id','title','description','owner','categorie','parts','comments']
+
+class CategorieSerializer(serializers.HyperlinkedModelSerializer):
+    posts = PostSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Categorie
+        fields = ['url','id','title','description','posts']
