@@ -22,7 +22,7 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
 class StepSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Step
-        fields = ['url','id','title','description','part']
+        fields = ['url','id','title','description','part','image']
 
 class PartSerializer(serializers.HyperlinkedModelSerializer):
     steps = StepSerializer(many=True, read_only=True)
@@ -35,7 +35,7 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
     class Meta:
         model = Post
-        fields = ['url','id','title','description','owner','categorie','parts','comments']
+        fields = ['url','id','title','description','owner','categorie','parts','comments','image']
 
 class CategorieSerializer(serializers.HyperlinkedModelSerializer):
     posts = PostSerializer(many=True, read_only=True)

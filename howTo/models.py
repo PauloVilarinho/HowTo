@@ -11,6 +11,7 @@ class Categorie(models.Model):
 
 
 class Post(models.Model):
+    image = models.FileField(null=True)
     title = models.CharField(max_length=255,unique=True)
     description = models.TextField()
     categorie =  models.ForeignKey(Categorie,
@@ -28,6 +29,7 @@ class Part(models.Model):
                                 related_name="parts")
 
 class Step(models.Model):
+    image = models.FileField(null=True)
     title = models.CharField(max_length=255)
     description = models.TextField()
     part = models.ForeignKey(Part,
